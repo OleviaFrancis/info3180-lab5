@@ -27,6 +27,12 @@ def home():
 def about():
     """Render the website's about page."""
     return render_template('about.html')
+    
+@app.route('/secure-page')
+@login_required
+def secure_page():
+    """Render the website's secure page."""
+    return render_template('secure_page.html')
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -58,11 +64,18 @@ def login():
             login_user(user, remember=remember_me)
 
             # remember to flash a message to the user
-            flash('Logged in successfully.', 'success')
+            flash('Logged in successfully.')
 
-            return redirect(url_for("home"))  # they should be redirected to a secure-page route instead
-    return render_template("login.html", form=form)
+            return redirect(url_for("/secure-page"))  # they should be redirected to a secure-page route instead
+    return render_template("login.", form=form)
 
+@app.route("/logout")
+@login_required
+def logout():
+    # Logout the user and end the session
+    logout_user()
+    flash('You have been logged out.')
+    return redirect(url_for('home'))
 
 # user_loader callback. This callback is used to reload the user object from
 # the user ID stored in the session
