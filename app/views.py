@@ -49,11 +49,8 @@ def login():
             
             user = UserProfile.query.filter_by(username=username).first()
             
-            if user is not None and check_password_hash(user.password, password):
-                remember_me = False
+            if check_password_hash(user.password, password):
                 
-                if 'remember_me' in request.form:
-                    remember_me = True
             # using your model, query database for a user based on the username
             # and password submitted. Remember you need to compare the password hash.
             # You will need to import the appropriate function to do so.
@@ -62,7 +59,7 @@ def login():
 
             # get user id, load into session
             
-            login_user(user, remember=remember_me)
+                login_user(user)
 
             # remember to flash a message to the user
             flash('Logged in successfully.')
