@@ -48,6 +48,7 @@ def login():
             password = form.password.data
             
             user = UserProfile.query.filter_by(username=username).first()
+            
             if user is not None and check_password_hash(user.password, password):
                 remember_me = False
                 
@@ -66,8 +67,8 @@ def login():
             # remember to flash a message to the user
             flash('Logged in successfully.')
 
-            return redirect(url_for("/secure-page"))  # they should be redirected to a secure-page route instead
-    return render_template("login.", form=form)
+            return redirect(url_for("secure_page"))  # they should be redirected to a secure-page route instead
+    return render_template("login.html", form=form)
 
 @app.route("/logout")
 @login_required
